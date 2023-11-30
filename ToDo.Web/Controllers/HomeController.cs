@@ -5,6 +5,9 @@ using System.Diagnostics;
 using ToDo.Web.Models.TaskViewModel;
 using ToDo.Services.DataAccess;
 using ToDo.Web.Models;
+using ToDo.DomainModel.Enums;
+using ToDo.DomainModel.Services.DataAccess;
+using ToDo.DomainModel;
 
 namespace ToDo.Web.Controllers
 {
@@ -12,13 +15,16 @@ namespace ToDo.Web.Controllers
     {
         private readonly ITaskRepository _repository;
         private readonly ILogger<HomeController> _logger;
+        private readonly ITaskService _taskService;
 
         public HomeController(
             ITaskRepository repository,
-            ILogger<HomeController> logger)
+            ILogger<HomeController> logger,
+            ITaskService taskService)
         {
             _repository = repository;
             _logger = logger;
+            _taskService = taskService;
         }
 
         [HttpGet]
@@ -43,7 +49,7 @@ namespace ToDo.Web.Controllers
                 UpdatedDate = DateTime.UtcNow,
                 CreatedDate = DateTime.UtcNow,
                 Active = true,
-                Type = Legal.Enums.Type.ToDo
+                TaskType = TaskType.ToDo
             };
 
             var model = new AddEditTaskViewModel(task);
@@ -56,15 +62,7 @@ namespace ToDo.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var task = new Task
-                {
-                    Active = model.Active,
-                    Type = model.TaskType,
-                    Name = model.Name,
-                    Description = model.Description,
-                    CreatedDate = model.CreatedDate,
-                    UpdatedDate = model.UpdatedDate
-                };
+                var task = _taskService.Add(model);
 
                 _repository.Add(task);
                 _repository.SaveChanges();
@@ -96,17 +94,7 @@ namespace ToDo.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var dbEntity = _repository.GetTask(model.Id);
-                if (dbEntity == null)
-                {
-                    return NotFound();
-                }
-
-                dbEntity.Active = model.Active;
-                dbEntity.Type = model.TaskType;
-                dbEntity.Name = model.Name;
-                dbEntity.Description = model.Description;
-                dbEntity.UpdatedDate = model.UpdatedDate;
+                _taskService.Edit(model);
 
                 _repository.SaveChanges();
 
@@ -133,7 +121,7 @@ namespace ToDo.Web.Controllers
         [HttpPost("[action]/{id}"), ActionName(nameof(Delete))]
         public IActionResult DeleteConfirmed(int id)
         {
-            var task = _repository.GetTask(id);
+            var task = _taskService.Delete(id);
 
             _repository.Delete(task);
             _repository.SaveChanges();
