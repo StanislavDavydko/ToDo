@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Collections.Generic;
 using System.Linq;
-using ToDo.DomainModel.Legal.Enums;
+using ToDo.DomainModel.Enums;
 
 namespace ToDo.DataAccess.ValueConverters
 {

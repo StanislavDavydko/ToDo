@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ToDo.DataAccess\ToDo.DataAccess.csproj" />
+    <ProjectReference Include="..\ToDo.DomainServices\ToDo.DomainServices.csproj" />
   </ItemGroup>
 
 </Project>

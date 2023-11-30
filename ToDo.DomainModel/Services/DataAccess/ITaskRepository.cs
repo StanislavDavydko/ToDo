@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using ToDo.DomainModel;
 
-namespace ToDo.Services.DataAccess
+namespace ToDo.DomainModel.DataAccess
 {
     public interface ITaskRepository
     {

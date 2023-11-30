@@ -1,7 +1,8 @@
-﻿using ToDo.DomainModel;
-using ToDo.DomainModel.Services.DataAccess;
-using ToDo.Services.DataAccess;
-using ToDo.Web.Models.TaskViewModel;
+﻿using System;
+using ToDo.DomainModel;
+using ToDo.DomainModel.DataAccess;
+using ToDo.DomainModel.Enums;
+using ToDo.DomainModel.Services;
 
 namespace ToDo.DomainServices
 {
@@ -14,35 +15,48 @@ namespace ToDo.DomainServices
             _repository = repository;
         }
 
-        public Task Add(AddEditTaskViewModel model)
+        public Task Add(
+            bool active, 
+            TaskType taskType, 
+            string name, 
+            string description, 
+            DateTime createdDate, 
+            DateTime updatedDate)
         {
             var task = new Task
             {
-                Active = model.Active,
-                TaskType = model.TaskType,
-                Name = model.Name,
-                Description = model.Description,
-                CreatedDate = model.CreatedDate,
-                UpdatedDate = model.UpdatedDate
+                Active = active,
+                TaskType = taskType,
+                Name = name,
+                Description = description,
+                CreatedDate = createdDate,
+                UpdatedDate = updatedDate
             };
 
             return task;
         }
 
-        public Task Edit(AddEditTaskViewModel model)
+        public Task Edit(
+            int id,
+            bool active, 
+            TaskType taskType, 
+            string name, 
+            string description, 
+            DateTime createdDate, 
+            DateTime updatedDate)
         {
-            var dbEntity = _repository.GetTask(model.Id);
+            var dbEntity = _repository.GetTask(id);
             
             if (dbEntity == null)
             {
                 return dbEntity;
             }
 
-            dbEntity.Active = model.Active;
-            dbEntity.TaskType = model.TaskType;
-            dbEntity.Name = model.Name;
-            dbEntity.Description = model.Description;
-            dbEntity.UpdatedDate = model.UpdatedDate;
+            dbEntity.Active = active;
+            dbEntity.TaskType = taskType;
+            dbEntity.Name = name;
+            dbEntity.Description = description;
+            dbEntity.UpdatedDate = updatedDate;
 
             return dbEntity;
         }

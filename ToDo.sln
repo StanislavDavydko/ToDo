@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDo.DomainModel", "ToDo.Do
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDo.Web", "ToDo.Web\ToDo.Web.csproj", "{690A2B2A-0AE7-4CBC-AC30-0469CD6B83DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDo.DomainServices", "ToDo.DomainServices\ToDo.DomainServices.csproj", "{03CE5FD2-854E-4375-93CB-B3BDCA554E5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDo.DomainServices", "ToDo.DomainServices\ToDo.DomainServices.csproj", "{03CE5FD2-854E-4375-93CB-B3BDCA554E5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

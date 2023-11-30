@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ToDo.DataAccess.ValueConverters;
+using ToDo.DomainModel;
 
 namespace ToDo.DataAccess.Configurations
 {
