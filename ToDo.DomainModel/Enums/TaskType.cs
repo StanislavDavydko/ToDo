@@ -1,6 +1,6 @@
-﻿namespace ToDo.Web.Legal.Enums
+﻿namespace ToDo.DomainModel.Enums
 {
-    public enum Type
+    public enum TaskType
     {
         ToDo,
         InDevelopment,

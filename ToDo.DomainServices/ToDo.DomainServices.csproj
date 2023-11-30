@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>ToDo.DomainServices</AssemblyName>
+    <RootNamespace>ToDo.DomainServices</RootNamespace>
+    <Authors>ToDo</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ToDo.DataAccess\ToDo.DataAccess.csproj" />
+    <ProjectReference Include="..\ToDo.DomainModel\ToDo.DomainModel.csproj" />
+  </ItemGroup>
+
+</Project>

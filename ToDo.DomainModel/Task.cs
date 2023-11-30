@@ -1,12 +1,13 @@
 ﻿using System;
+using ToDo.DomainModel.Enums;
 
-namespace ToDo
+namespace ToDo.DomainModel
 {
     public class Task
     {
         public int Id { get; set; }
 
-        public Web.Legal.Enums.Type Type { get; set; }
+        public TaskType TaskType { get; set; }
 
         public bool Active { get; set; }
 
