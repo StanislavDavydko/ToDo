@@ -1,0 +1,49 @@
+﻿@model ToDo.Web.Models.TaskViewModel.AddEditTaskViewModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="@nameof(HomeController.Edit)" asp-route-id="@Model.Id">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="dropdown form-group">
+                <label asp-for="TaskType" class="control-label"></label>
+                <select asp-for="TaskType" class="form-control" required>
+                    <option value="1">To Do</option>
+                    <option value="2">In Development</option>
+                    <option value="3">Done</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="5" required></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedDate" class="control-label"></label>
+                <input asp-for="CreatedDate" type="text" class="form-control" asp-format="{0:MM/dd/yyyy}" required mw-datepicker readonly />
+                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdatedDate" class="control-label"></label>
+                <input asp-for="UpdatedDate" type="text" class="form-control" asp-format="{0:MM/dd/yyyy}" required mw-datepicker readonly />
+                <span asp-validation-for="UpdatedDate" class="text-danger"></span>
+            </div>
+            <div class="text-right">
+                <hr />
+                <a asp-action="@nameof(HomeController.Index)" class="btn btn-outline-dark">Back</a>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>

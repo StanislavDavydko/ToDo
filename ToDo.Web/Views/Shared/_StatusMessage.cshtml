@@ -1,0 +1,19 @@
+﻿@model OperationResult
+
+@if (Model != null && !string.IsNullOrEmpty(Model.Message))
+{
+    var statusMessageClass = !Model.IsSuccess ? "danger" : "success";
+
+    <div class="alert alert-@statusMessageClass js-alert-operation-result" role="alert">
+        @Model.Message
+    </div>
+
+    if (Model.IsSuccess)
+    {
+        <script type="text/javascript">
+            setTimeout(function () {
+                document.getElementsByClassName('js-alert-operation-result')[0].remove()
+            }, 8000);
+        </script>
+    }
+}

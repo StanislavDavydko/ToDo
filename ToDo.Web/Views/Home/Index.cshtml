@@ -1,0 +1,101 @@
+﻿@model TaskListViewModel
+
+@{
+    ViewData["Title"] = "Tasks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<partial name="_StatusMessage" model="Model.OperationResult" />
+
+<div class="form-group text-center">
+    <a class="btn btn-primary btn-lg"
+       asp-controller="@UrlHelper.NormalizeControllerName(nameof(HomeController))"
+       asp-action="@nameof(HomeController.Add)">
+        Add Task
+    </a>
+</div>
+<hr />
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                Created Date
+            </th>
+            <th>
+                Uptade Date
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Active
+            </th>
+            <th>
+                Edit/Delete
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Tasks)
+        {
+            <tr>
+                <td>
+                    @item.CreatedDate.ToString("MM/dd/yyyy")
+                </td>
+                <td>
+                    @item.UpdatedDate.ToString("MM/dd/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaskType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td class="table-controls">
+                    @if (item.Active)
+                    {
+                        <a class="btn btn-danger"
+                           mw-open-modal-link
+                           asp-action="@nameof(HomeController.Deactive)"
+                           asp-route-id="@item.Id">
+                            Deactivate
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-primary"
+                           mw-open-modal-link
+                           asp-action="@nameof(HomeController.Active)"
+                           asp-route-id="@item.Id">
+                            Activate
+                        </a>
+                    }
+                </td>
+                <td class="table-controls">
+                    <a asp-action="@nameof(HomeController.Edit)"
+                       asp-route-id="@item.Id"
+                       class="btn btn-primary">
+                        Edit
+                    </a>
+                    <a class="btn btn-danger"
+                       mw-open-modal-link
+                       asp-action="@nameof(HomeController.Delete)"
+                       asp-route-id="@item.Id">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
