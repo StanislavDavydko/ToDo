@@ -1,5 +1,4 @@
 ﻿using System;
-using ToDo.DomainModel.Legal.Enums;
 
 namespace ToDo
 {
@@ -7,7 +6,7 @@ namespace ToDo
     {
         public int Id { get; set; }
 
-        public TaskType TaskType { get; set; }
+        public Web.Legal.Enums.Type Type { get; set; }
 
         public bool Active { get; set; }
 

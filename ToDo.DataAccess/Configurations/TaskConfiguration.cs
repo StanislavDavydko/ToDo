@@ -14,13 +14,13 @@ namespace ToDo.DataAccess.Configurations
                 .HasKey(i => i.Id);
 
             builder
-                .Property(d => d.TaskType)
+                .Property(d => d.Type)
                 .HasColumnType("CHAR (10)")
                 .IsRequired();
 
             builder
-                .Property(nameof(Task.TaskType))
-                .HasConversion(new TaskTypeConverter());
+                .Property(nameof(Task.Type))
+                .HasConversion(new TypeConverter());
 
             builder
                 .Property(i => i.Active)

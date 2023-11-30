@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
-using ToDo.DomainModel.Legal.Enums;
 using ToDo.Web.Models.TaskViewModel;
 using ToDo.Services.DataAccess;
 using ToDo.Web.Models;
@@ -44,7 +43,7 @@ namespace ToDo.Web.Controllers
                 UpdatedDate = DateTime.UtcNow,
                 CreatedDate = DateTime.UtcNow,
                 Active = true,
-                TaskType = TaskType.ToDo
+                Type = Legal.Enums.Type.ToDo
             };
 
             var model = new AddEditTaskViewModel(task);
@@ -60,7 +59,7 @@ namespace ToDo.Web.Controllers
                 var task = new Task
                 {
                     Active = model.Active,
-                    TaskType = model.TaskType,
+                    Type = model.TaskType,
                     Name = model.Name,
                     Description = model.Description,
                     CreatedDate = model.CreatedDate,
@@ -104,7 +103,7 @@ namespace ToDo.Web.Controllers
                 }
 
                 dbEntity.Active = model.Active;
-                dbEntity.TaskType = model.TaskType;
+                dbEntity.Type = model.TaskType;
                 dbEntity.Name = model.Name;
                 dbEntity.Description = model.Description;
                 dbEntity.UpdatedDate = model.UpdatedDate;

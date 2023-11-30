@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using ToDo.DomainModel.Legal.Enums;
 
 namespace ToDo.Web.Models.TaskViewModel
 {
@@ -13,7 +12,7 @@ namespace ToDo.Web.Models.TaskViewModel
         public bool Active { get; set; }
 
         [Required]
-        public TaskType TaskType { get; set; }
+        public Legal.Enums.Type TaskType { get; set; }
 
         [Required]
         [DisplayName("Name")]
@@ -40,7 +39,7 @@ namespace ToDo.Web.Models.TaskViewModel
             {
                 Id = task.Id;
                 Active = task.Active;
-                TaskType = task.TaskType;
+                TaskType = task.Type;
                 Name = task.Name;
                 Description = task.Description;
                 CreatedDate = task.CreatedDate;

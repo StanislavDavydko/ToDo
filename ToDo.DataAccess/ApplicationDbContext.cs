@@ -20,9 +20,9 @@ namespace ToDo.DataAccess
             {
                 b.ToTable("Task");
 
-                b.Property(c => c.TaskType)
+                b.Property(c => c.Type)
                  .HasColumnType("char(10)")
-                 .HasConversion(new TaskTypeConverter());
+                 .HasConversion(new TypeConverter());
             });
         }
     }
