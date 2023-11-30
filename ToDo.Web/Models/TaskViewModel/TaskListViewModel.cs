@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ToDo.DomainModel;
 using ToDo.Web.Shared;
 
 namespace ToDo.Web.Models.TaskViewModel

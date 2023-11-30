@@ -3,11 +3,11 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using ToDo.Web.Models.TaskViewModel;
-using ToDo.Services.DataAccess;
 using ToDo.Web.Models;
 using ToDo.DomainModel.Enums;
-using ToDo.DomainModel.Services.DataAccess;
 using ToDo.DomainModel;
+using ToDo.DomainModel.DataAccess;
+using ToDo.DomainModel.Services;
 
 namespace ToDo.Web.Controllers
 {
@@ -62,7 +62,13 @@ namespace ToDo.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var task = _taskService.Add(model);
+                var task = _taskService.Add(
+                    model.Active,
+                    model.TaskType,
+                    model.Name,
+                    model.Description,
+                    model.CreatedDate,
+                    model.UpdatedDate);
 
                 _repository.Add(task);
                 _repository.SaveChanges();
@@ -94,7 +100,14 @@ namespace ToDo.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _taskService.Edit(model);
+                _taskService.Edit(
+                    model.Id,
+                    model.Active,
+                    model.TaskType,
+                    model.Name,
+                    model.Description,
+                    model.CreatedDate,
+                    model.UpdatedDate);
 
                 _repository.SaveChanges();
 

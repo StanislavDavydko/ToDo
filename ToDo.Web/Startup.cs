@@ -6,7 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ToDo.DataAccess;
 using ToDo.DataAccess.Repositories;
-using ToDo.Services.DataAccess;
+using ToDo.DomainModel.DataAccess;
+using ToDo.DomainModel.Services;
+using ToDo.DomainServices;
 
 namespace ToDo.Web
 {
@@ -26,6 +28,7 @@ namespace ToDo.Web
 
             services.AddMvc();
 
+            services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<ITaskRepository, TaskRepository>();
         }
 

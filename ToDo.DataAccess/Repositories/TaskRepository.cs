@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ToDo.Services.DataAccess;
+using ToDo.DomainModel;
+using ToDo.DomainModel.DataAccess;
 
 namespace ToDo.DataAccess.Repositories
 {
