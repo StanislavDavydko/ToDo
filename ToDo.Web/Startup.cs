@@ -24,17 +24,9 @@ namespace ToDo.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddHealthChecks();
             services.AddMvc();
 
             services.AddScoped<ITaskRepository, TaskRepository>();
@@ -57,17 +49,9 @@ namespace ToDo.Web
             app.UseHttpsRedirection();
             app.UseForwardedHeaders();
 
-            var rewriteOptions = new RewriteOptions();
-            rewriteOptions.Add(new CanonicalDomainRewriteRule());
-
-            app.UseRewriter(rewriteOptions);
-
             app.UseStaticFiles();
-            app.UseCookiePolicy();
 
             app.UseRouting();
-
-            app.UseCors();
 
             app.UseEndpoints(e =>
             {
