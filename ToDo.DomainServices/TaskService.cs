@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using ToDo.DomainModel.DataAccess;
 using ToDo.DomainModel.Enums;
@@ -31,11 +32,11 @@ namespace ToDo.DomainServices
         }
 
         public async Task Add(
-            bool active, 
-            TaskType taskType, 
-            string name, 
-            string description, 
-            DateTime createdDate, 
+            bool active,
+            TaskType taskType,
+            string name,
+            string description,
+            DateTime createdDate,
             DateTime updatedDate)
         {
             var task = new DomainModel.Task
@@ -52,15 +53,20 @@ namespace ToDo.DomainServices
             await _repository.SaveChangesAsync();
         }
 
-        public async Task Edit(
+        public async Task<HttpStatusCode> Edit(
             int id,
-            bool active, 
-            TaskType taskType, 
-            string name, 
+            bool active,
+            TaskType taskType,
+            string name,
             string description,
             DateTime updatedDate)
         {
             var dbEntity = await _repository.GetTask(id);
+
+            if (dbEntity == null)
+            {
+                return HttpStatusCode.NotFound;
+            }
 
             dbEntity.Active = active;
             dbEntity.TaskType = taskType;
@@ -69,14 +75,23 @@ namespace ToDo.DomainServices
             dbEntity.UpdatedDate = updatedDate;
 
             await _repository.SaveChangesAsync();
+
+            return HttpStatusCode.OK;
         }
 
-        public async Task Delete(int id)
+        public async Task<HttpStatusCode> Delete(int id)
         {
             var task = await _repository.GetTask(id);
 
+            if (task == null)
+            {
+                return HttpStatusCode.NotFound;
+            }
+
             _repository.Delete(task);
             await _repository.SaveChangesAsync();
+
+            return HttpStatusCode.OK;
         }
 
         public async Task ActiveConfirmed(int id)

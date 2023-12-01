@@ -6,6 +6,7 @@ using ToDo.Web.Models;
 using ToDo.DomainModel.Enums;
 using ToDo.DomainModel.Services;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace ToDo.Web.Controllers
 {
@@ -13,8 +14,7 @@ namespace ToDo.Web.Controllers
     {
         private readonly ITaskService _taskService;
 
-        public HomeController(
-            ITaskService taskService)
+        public HomeController(ITaskService taskService)
         {
             _taskService = taskService;
         }
@@ -89,7 +89,7 @@ namespace ToDo.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _taskService.Edit(
+                var status = await _taskService.Edit(
                     model.Id,
                     model.Active,
                     model.TaskType,
@@ -97,9 +97,16 @@ namespace ToDo.Web.Controllers
                     model.Description,
                     model.UpdatedDate);
 
-                SetOperationResult(true, "Task has been updated successfully");
+                if (status == HttpStatusCode.OK)
+                {
+                    SetOperationResult(true, "Task has been updated successfully");
 
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
             return View(model);
         }
@@ -120,10 +127,18 @@ namespace ToDo.Web.Controllers
         [HttpPost("[action]/{id}"), ActionName(nameof(Delete))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _taskService.Delete(id);
+            var status = await _taskService.Delete(id);
 
-            SetOperationResult(true, "Task has been removed successfully");
-            return RedirectToAction(nameof(Index));
+            if (status == HttpStatusCode.OK)
+            {
+                SetOperationResult(true, "Task has been removed successfully");
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet("[action]/{id}")]
