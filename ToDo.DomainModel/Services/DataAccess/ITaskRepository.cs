@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ToDo.DomainModel.DataAccess
 {
     public interface ITaskRepository
     {
-        List<Task> GetTasks();
+        Task<List<DomainModel.Task>> GetTasks();
 
-        Task GetTask(int id);
+        Task<Task> GetTask(int id);
 
-        void SaveChanges();
+        System.Threading.Tasks.Task SaveChangesAsync();
 
         void Add(Task task);
 

@@ -1,5 +1,6 @@
 ﻿using System;
-using ToDo.DomainModel;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using ToDo.DomainModel.DataAccess;
 using ToDo.DomainModel.Enums;
 using ToDo.DomainModel.Services;
@@ -15,7 +16,21 @@ namespace ToDo.DomainServices
             _repository = repository;
         }
 
-        public Task Add(
+        public async Task<List<DomainModel.Task>> GetTasks()
+        {
+            var task = await _repository.GetTasks();
+
+            return task;
+        }
+
+        public async Task<DomainModel.Task> GetTask(int id)
+        {
+            var task = await _repository.GetTask(id);
+
+            return task;
+        }
+
+        public async Task Add(
             bool active, 
             TaskType taskType, 
             string name, 
@@ -23,7 +38,7 @@ namespace ToDo.DomainServices
             DateTime createdDate, 
             DateTime updatedDate)
         {
-            var task = new Task
+            var task = new DomainModel.Task
             {
                 Active = active,
                 TaskType = taskType,
@@ -33,24 +48,19 @@ namespace ToDo.DomainServices
                 UpdatedDate = updatedDate
             };
 
-            return task;
+            _repository.Add(task);
+            await _repository.SaveChangesAsync();
         }
 
-        public Task Edit(
+        public async Task Edit(
             int id,
             bool active, 
             TaskType taskType, 
             string name, 
-            string description, 
-            DateTime createdDate, 
+            string description,
             DateTime updatedDate)
         {
-            var dbEntity = _repository.GetTask(id);
-            
-            if (dbEntity == null)
-            {
-                return dbEntity;
-            }
+            var dbEntity = await _repository.GetTask(id);
 
             dbEntity.Active = active;
             dbEntity.TaskType = taskType;
@@ -58,14 +68,33 @@ namespace ToDo.DomainServices
             dbEntity.Description = description;
             dbEntity.UpdatedDate = updatedDate;
 
-            return dbEntity;
+            await _repository.SaveChangesAsync();
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            var task = _repository.GetTask(id);
+            var task = await _repository.GetTask(id);
 
-            return task;
+            _repository.Delete(task);
+            await _repository.SaveChangesAsync();
+        }
+
+        public async Task ActiveConfirmed(int id)
+        {
+            var dbEntity = await _repository.GetTask(id);
+
+            dbEntity.Active = true;
+
+            await _repository.SaveChangesAsync();
+        }
+
+        public async Task DeactiveConfirmed(int id)
+        {
+            var dbEntity = await _repository.GetTask(id);
+
+            dbEntity.Active = false;
+
+            await _repository.SaveChangesAsync();
         }
     }
 }

@@ -15,6 +15,11 @@ namespace ToDo.DataAccess.Configurations
                 .HasKey(i => i.Id);
 
             builder
+                .Property(i => i.Id)
+                .HasColumnType("INT")
+                .IsRequired();
+
+            builder
                 .Property(d => d.TaskType)
                 .HasColumnType("CHAR (10)")
                 .IsRequired();
