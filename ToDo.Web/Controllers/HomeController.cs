@@ -157,11 +157,18 @@ namespace ToDo.Web.Controllers
         [HttpPost("[action]/{id}"), ActionName(nameof(Active))]
         public async Task<IActionResult> ActiveConfirmed(int id)
         {
-            await _taskService.ActiveConfirmed(id);
+            var status =  await _taskService.ActiveConfirmed(id);
 
-            SetOperationResult(true, "Task has been actived successfully");
+            if (status == HttpStatusCode.OK)
+            {
+                SetOperationResult(true, "Task has been actived successfully");
 
-            return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
         [HttpGet("[action]/{id}")]
@@ -180,11 +187,18 @@ namespace ToDo.Web.Controllers
         [HttpPost("[action]/{id}"), ActionName(nameof(Deactive))]
         public async Task<IActionResult> DeactiveConfirmed(int id)
         {
-            await _taskService.DeactiveConfirmed(id);
+            var status =  await _taskService.DeactiveConfirmed(id);
 
-            SetOperationResult(true, "Task has been deactived successfully");
+            if (status == HttpStatusCode.OK)
+            {
+                SetOperationResult(true, "Task has been deactived successfully");
 
-            return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return NotFound();
+            }            
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

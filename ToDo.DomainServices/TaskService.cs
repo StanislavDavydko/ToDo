@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using ToDo.DomainModel;
 using ToDo.DomainModel.DataAccess;
 using ToDo.DomainModel.Enums;
 using ToDo.DomainModel.Services;
@@ -31,7 +32,7 @@ namespace ToDo.DomainServices
             return task;
         }
 
-        public async Task Add(
+        public async System.Threading.Tasks.Task Add(
             bool active,
             TaskType taskType,
             string name,
@@ -94,22 +95,36 @@ namespace ToDo.DomainServices
             return HttpStatusCode.OK;
         }
 
-        public async Task ActiveConfirmed(int id)
+        public async Task<HttpStatusCode> ActiveConfirmed(int id)
         {
             var dbEntity = await _repository.GetTask(id);
+
+            if (dbEntity == null)
+            {
+                return HttpStatusCode.NotFound;
+            }
 
             dbEntity.Active = true;
 
             await _repository.SaveChangesAsync();
+
+            return HttpStatusCode.OK;
         }
 
-        public async Task DeactiveConfirmed(int id)
+        public async Task<HttpStatusCode> DeactiveConfirmed(int id)
         {
             var dbEntity = await _repository.GetTask(id);
+
+            if (dbEntity == null)
+            {
+                return HttpStatusCode.NotFound;
+            }
 
             dbEntity.Active = false;
 
             await _repository.SaveChangesAsync();
+
+            return HttpStatusCode.OK;
         }
     }
 }
