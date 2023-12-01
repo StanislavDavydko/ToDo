@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using ToDo.DomainModel.Enums;
 
@@ -19,7 +20,7 @@ namespace ToDo.DomainModel.Services
             DateTime createdDate,
             DateTime updatedDate);
 
-        System.Threading.Tasks.Task Edit(
+        Task<HttpStatusCode> Edit(
             int id,
             bool active,
             TaskType taskType,
@@ -27,7 +28,7 @@ namespace ToDo.DomainModel.Services
             string description,
             DateTime updatedDate);
 
-        System.Threading.Tasks.Task Delete(int id);
+        Task<HttpStatusCode> Delete(int id);
 
         System.Threading.Tasks.Task ActiveConfirmed(int id);
 
