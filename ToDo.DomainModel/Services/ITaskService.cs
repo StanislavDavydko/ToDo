@@ -30,8 +30,8 @@ namespace ToDo.DomainModel.Services
 
         Task<HttpStatusCode> Delete(int id);
 
-        System.Threading.Tasks.Task ActiveConfirmed(int id);
+        Task<HttpStatusCode> ActiveConfirmed(int id);
 
-        System.Threading.Tasks.Task DeactiveConfirmed(int id);
+        Task<HttpStatusCode> DeactiveConfirmed(int id);
     }
 }
