@@ -1,40 +1,32 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using ToDo.Web.Models.TaskViewModel;
 using ToDo.Web.Models;
 using ToDo.DomainModel.Enums;
-using ToDo.DomainModel;
-using ToDo.DomainModel.DataAccess;
 using ToDo.DomainModel.Services;
+using System.Threading.Tasks;
 
 namespace ToDo.Web.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly ITaskRepository _repository;
-        private readonly ILogger<HomeController> _logger;
         private readonly ITaskService _taskService;
 
         public HomeController(
-            ITaskRepository repository,
-            ILogger<HomeController> logger,
             ITaskService taskService)
         {
-            _repository = repository;
-            _logger = logger;
             _taskService = taskService;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var task = _repository.GetTasks();
+            var tasks = await _taskService.GetTasks();
 
             var result = new TaskListViewModel()
             {
-                Tasks = task,
+                Tasks = tasks,
                 OperationResult = GetOperationResult()
             };
 
@@ -44,7 +36,7 @@ namespace ToDo.Web.Controllers
         [HttpGet("[action]")]
         public IActionResult Add()
         {
-            var task = new Task()
+            var task = new DomainModel.Task()
             {
                 UpdatedDate = DateTime.UtcNow,
                 CreatedDate = DateTime.UtcNow,
@@ -58,20 +50,17 @@ namespace ToDo.Web.Controllers
         }
 
         [HttpPost("[action]")]
-        public IActionResult Add(AddEditTaskViewModel model)
+        public async Task<IActionResult> Add(AddEditTaskViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var task = _taskService.Add(
+                await _taskService.Add(
                     model.Active,
                     model.TaskType,
                     model.Name,
                     model.Description,
                     model.CreatedDate,
                     model.UpdatedDate);
-
-                _repository.Add(task);
-                _repository.SaveChanges();
 
                 SetOperationResult(true, "Task has been created successfully");
 
@@ -81,9 +70,9 @@ namespace ToDo.Web.Controllers
         }
 
         [HttpGet("[action]/{id}")]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var task = _repository.GetTask(id);
+            var task = await _taskService.GetTask(id);
 
             if (task == null)
             {
@@ -96,20 +85,17 @@ namespace ToDo.Web.Controllers
         }
 
         [HttpPost("[action]/{id}")]
-        public IActionResult Edit(AddEditTaskViewModel model)
+        public async Task<IActionResult> Edit(AddEditTaskViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _taskService.Edit(
+                await _taskService.Edit(
                     model.Id,
                     model.Active,
                     model.TaskType,
                     model.Name,
                     model.Description,
-                    model.CreatedDate,
                     model.UpdatedDate);
-
-                _repository.SaveChanges();
 
                 SetOperationResult(true, "Task has been updated successfully");
 
@@ -119,9 +105,9 @@ namespace ToDo.Web.Controllers
         }
 
         [HttpGet("[action]/{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var task = _repository.GetTask(id);
+            var task = await _taskService.GetTask(id);
 
             if (task == null)
             {
@@ -132,21 +118,18 @@ namespace ToDo.Web.Controllers
         }
 
         [HttpPost("[action]/{id}"), ActionName(nameof(Delete))]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var task = _taskService.Delete(id);
-
-            _repository.Delete(task);
-            _repository.SaveChanges();
+            await _taskService.Delete(id);
 
             SetOperationResult(true, "Task has been removed successfully");
             return RedirectToAction(nameof(Index));
         }
 
         [HttpGet("[action]/{id}")]
-        public IActionResult Active(int id)
+        public async Task<IActionResult> Active(int id)
         {
-            var task = _repository.GetTask(id);
+            var task = await _taskService.GetTask(id);
 
             if (task == null)
             {
@@ -157,18 +140,9 @@ namespace ToDo.Web.Controllers
         }
 
         [HttpPost("[action]/{id}"), ActionName(nameof(Active))]
-        public IActionResult ActiveConfirmed(int id)
+        public async Task<IActionResult> ActiveConfirmed(int id)
         {
-            var dbEntity = _repository.GetTask(id);
-
-            if (dbEntity == null)
-            {
-                return NotFound();
-            }
-
-            dbEntity.Active = true;
-
-            _repository.SaveChanges();
+            await _taskService.ActiveConfirmed(id);
 
             SetOperationResult(true, "Task has been actived successfully");
 
@@ -176,9 +150,9 @@ namespace ToDo.Web.Controllers
         }
 
         [HttpGet("[action]/{id}")]
-        public IActionResult Deactive(int id)
+        public async Task<IActionResult> Deactive(int id)
         {
-            var task = _repository.GetTask(id);
+            var task = await _taskService.GetTask(id);
 
             if (task == null)
             {
@@ -189,17 +163,9 @@ namespace ToDo.Web.Controllers
         }
 
         [HttpPost("[action]/{id}"), ActionName(nameof(Deactive))]
-        public IActionResult DeactiveConfirmed(int id)
+        public async Task<IActionResult> DeactiveConfirmed(int id)
         {
-            var dbEntity = _repository.GetTask(id);
-            if (dbEntity == null)
-            {
-                return NotFound();
-            }
-
-            dbEntity.Active = false;
-
-            _repository.SaveChanges();
+            await _taskService.DeactiveConfirmed(id);
 
             SetOperationResult(true, "Task has been deactived successfully");
 

@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
-using ToDo.DomainModel;
+using System.Threading.Tasks;
 using ToDo.DomainModel.DataAccess;
 
 namespace ToDo.DataAccess.Repositories
@@ -14,31 +15,31 @@ namespace ToDo.DataAccess.Repositories
             _context = context;
         }
 
-        public List<Task> GetTasks()
+        public async Task<List<DomainModel.Task>> GetTasks()
         {
-            return _context.Task
+            return await _context.Task
                 .OrderByDescending(a => a.Active)
                 .ThenBy(a => a.CreatedDate)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Task GetTask(int id)
+        public async Task<DomainModel.Task> GetTask(int id)
         {
-            return _context.Task
-                .FirstOrDefault(a => a.Id == id);
+            return await _context.Task
+                .FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public void SaveChanges()
+        public async Task SaveChangesAsync()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Add(Task task)
+        public void Add(DomainModel.Task task)
         {
             _context.Task.Add(task);
         }
 
-        public void Delete(Task task)
+        public void Delete(DomainModel.Task task)
         {
             _context.Task.Remove(task);
         }

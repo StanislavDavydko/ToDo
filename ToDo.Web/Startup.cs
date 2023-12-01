@@ -46,9 +46,6 @@ namespace ToDo.Web
 
             app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
-            app.UseHttpsRedirection();
-            app.UseForwardedHeaders();
-
             app.UseStaticFiles();
 
             app.UseRouting();
